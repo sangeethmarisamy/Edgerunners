@@ -65,3 +65,93 @@ Student / Teacher / Admin
           |
           v
       PostgreSQL
+academic-intelligence/
+│
+├── src/
+│   └── main/
+│       ├── java/
+│       │   └── com/buildathon/academic/
+│       │       ├── config/
+│       │       ├── controller/
+│       │       ├── model/
+│       │       ├── repository/
+│       │       ├── service/
+│       │       └── security/
+│       │
+│       └── resources/
+│           └── application.properties
+│
+├── frontend/
+│   ├── src/
+│   │   ├── api/
+│   │   ├── components/
+│   │   ├── pages/
+│   │   ├── App.jsx
+│   │   ├── App.css
+│   │   └── main.jsx
+│   │
+│   ├── package.json
+│   ├── vite.config.js
+│   └── index.html
+│
+├── pom.xml
+├── README.md
+└── .gitignore
+
+Run Backend
+
+From the project root:
+
+cd ~/buildathon-2026/academic-intelligence
+
+Build:
+
+mvn clean package
+
+Run:
+
+mvn spring-boot:run
+
+Backend URL:
+
+http://localhost:8080
+
+API base URL:
+
+http://localhost:8080/api
+
+Keep this terminal running.
+
+Frontend Setup
+
+Open a second terminal:
+
+cd ~/buildathon-2026/academic-intelligence/frontend
+
+Install dependencies:
+
+npm install
+
+Run frontend:
+
+npm run dev
+
+Vite normally starts at:
+
+http://localhost:5173
+
+If port 5173 is already in use, Vite automatically selects another port.
+
+For network access:
+
+npm run dev -- --host 0.0.0.0
+
+Use the Network URL displayed by Vite.Run Complete Application
+Terminal 1 — Backend
+cd ~/buildathon-2026/academic-intelligence
+mvn spring-boot:run
+Terminal 2 — Frontend
+cd ~/buildathon-2026/academic-intelligence/frontend
+npm run dev
+
+Then open the frontend URL displayed by Vite.
