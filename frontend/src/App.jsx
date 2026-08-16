@@ -3,6 +3,10 @@ import { getStudents, createStudent, deleteStudent } from "./api/studentApi";
 import AppShell from "./components/AppShell";
 import "./App.css";
 import Teachers from "./pages/Teachers";
+import Courses from "./pages/Courses";
+import Classrooms from "./pages/Classrooms";
+import Enrollments from "./pages/Enrollments";
+import Attendance from "./pages/Attendance";
 function App() {
   const [showForm, setShowForm] = useState(false);
   const [currentPage, setCurrentPage] = useState("students");
@@ -218,6 +222,10 @@ function App() {
       )}
 
       {currentPage === "teachers" && <Teachers />}
+      {currentPage === "courses" && <Courses />}
+      {currentPage === "classrooms" && <Classrooms />}
+      {currentPage === "enrollments" && <Enrollments />}
+      {currentPage === "attendance" && <Attendance />}
     </AppShell>
   );
 }
