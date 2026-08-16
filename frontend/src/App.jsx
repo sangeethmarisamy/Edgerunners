@@ -635,6 +635,100 @@ function App() {
     );
   }
 
+
+  /*
+   * ============================
+   * ACADEMIC DATA PAGES
+   * ============================
+   */
+
+  function AcademicDataPage({ title, endpoint, columns }) {
+    const [data, setData] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState("");
+
+    useEffect(() => {
+      async function loadData() {
+        setLoading(true);
+        setError("");
+
+        try {
+          const response = await fetch(`${API_BASE_URL}${endpoint}`);
+
+          if (!response.ok) {
+            throw new Error(`Request failed: ${response.status}`);
+          }
+
+          const result = await response.json();
+          setData(Array.isArray(result) ? result : []);
+        } catch (err) {
+          console.error(err);
+          setError("Unable to load data from backend.");
+        } finally {
+          setLoading(false);
+        }
+      }
+
+      loadData();
+    }, [endpoint]);
+
+    return (
+      <div className="app">
+        <div className="page-header">
+          <div>
+            <h1>{title}</h1>
+            <p>Live data from the Academic Intelligence backend.</p>
+          </div>
+
+          <div className="role-badge">
+            {role.toUpperCase()}
+          </div>
+        </div>
+
+        <div className="dashboard-card">
+          {loading && <p>Loading {title.toLowerCase()}...</p>}
+
+          {error && (
+            <div className="error-card">
+              <h2>Backend connection error</h2>
+              <p>{error}</p>
+            </div>
+          )}
+
+          {!loading && !error && data.length === 0 && (
+            <p>No {title.toLowerCase()} available.</p>
+          )}
+
+          {!loading && !error && data.length > 0 && (
+            <div style={{ overflowX: "auto" }}>
+              <table>
+                <thead>
+                  <tr>
+                    {columns.map((column) => (
+                      <th key={column.label}>{column.label}</th>
+                    ))}
+                  </tr>
+                </thead>
+
+                <tbody>
+                  {data.map((item) => (
+                    <tr key={item.id}>
+                      {columns.map((column) => (
+                        <td key={column.label}>
+                          {column.render(item)}
+                        </td>
+                      ))}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </div>
+      </div>
+    );
+  }
+
   /*
    * ============================
    * MAIN RENDER
@@ -649,7 +743,8 @@ function App() {
       setRole={changeRole}
     >
       {role === "student" &&
-        currentPage === "dashboard" && (
+        (currentPage === "dashboard" ||
+         currentPage === "student-dashboard") && (
           <StudentDashboard />
         )}
 
@@ -849,6 +944,115 @@ function App() {
 
       {currentPage === "classrooms" && (
         <Classrooms />
+      )}
+
+      {currentPage === "assignments" && (
+        <AcademicDataPage
+          title="Assignments"
+          endpoint="/assignments"
+          columns={[
+            {
+              label: "Title",
+              render: (item) => item.title || "-"
+            },
+            {
+              label: "Description",
+              render: (item) => item.description || "-"
+            },
+            {
+              label: "Due Date",
+              render: (item) => item.dueDate || "-"
+            },
+            {
+              label: "Max Marks",
+              render: (item) => item.maxMarks ?? "-"
+            }
+          ]}
+        />
+      )}
+
+      {currentPage === "exams" && (
+        <AcademicDataPage
+          title="Examinations"
+          endpoint="/exams"
+          columns={[
+            {
+              label: "Exam",
+              render: (item) => item.examName || "-"
+            },
+            {
+              label: "Type",
+              render: (item) => item.examType || "-"
+            },
+            {
+              label: "Date",
+              render: (item) => item.examDate || "-"
+            },
+            {
+              label: "Total Marks",
+              render: (item) => item.totalMarks ?? "-"
+            },
+            {
+              label: "Duration",
+              render: (item) => item.duration || "-"
+            }
+          ]}
+        />
+      )}
+
+      {currentPage === "grades" && (
+        <AcademicDataPage
+          title="Grades"
+          endpoint="/grades"
+          columns={[
+            {
+              label: "Student",
+              render: (item) => item.student?.name || "-"
+            },
+            {
+              label: "Exam",
+              render: (item) => item.exam?.examName || "-"
+            },
+            {
+              label: "Marks",
+              render: (item) => item.marksObtained ?? "-"
+            },
+            {
+              label: "Grade",
+              render: (item) => item.grade || "-"
+            },
+            {
+              label: "Remarks",
+              render: (item) => item.remarks || "-"
+            }
+          ]}
+        />
+      )}
+
+      {currentPage === "attendance" && (
+        <AcademicDataPage
+          title="Attendance"
+          endpoint="/attendance"
+          columns={[
+            {
+              label: "Student",
+              render: (item) => item.student?.name || "-"
+            },
+            {
+              label: "Course",
+              render: (item) =>
+                item.classroom?.course?.courseName || "-"
+            },
+            {
+              label: "Date",
+              render: (item) => item.attendanceDate || "-"
+            },
+            {
+              label: "Status",
+              render: (item) => item.status || "-"
+            }
+          ]}
+        />
       )}
     </AppShell>
   );
