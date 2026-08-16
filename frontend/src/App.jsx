@@ -8,6 +8,7 @@ import Classrooms from "./pages/Classrooms";
 import Enrollments from "./pages/Enrollments";
 import Attendance from "./pages/Attendance";
 import Dashboard from "./pages/Dashboard";
+import Assignments from "./pages/Assignments";
 function App() {
   const [showForm, setShowForm] = useState(false);
   const [currentPage, setCurrentPage] = useState("students");
@@ -228,6 +229,7 @@ function App() {
       {currentPage === "enrollments" && <Enrollments />}
       {currentPage === "attendance" && <Attendance />}
       {currentPage === "dashboard" && <Dashboard />}
+      {currentPage === "assignments" && <Assignments />}
     </AppShell>
   );
 }

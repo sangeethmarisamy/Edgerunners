@@ -90,7 +90,14 @@ function AppShell({ children, currentPage, setCurrentPage }) {
               Attendance
             </button>
 
-            <button className="nav-item">Assignments</button>
+            <button
+              className={`nav-item ${
+                currentPage === "assignments" ? "active" : ""
+              }`}
+              onClick={() => setCurrentPage("assignments")}
+            >
+              Assignments
+            </button>
 
             <button className="nav-item">Examinations</button>
           </div>
