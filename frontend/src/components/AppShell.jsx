@@ -15,7 +15,15 @@ function AppShell({ children, currentPage, setCurrentPage }) {
           <div className="nav-section">
             <span className="nav-title">OVERVIEW</span>
 
-            <button className="nav-item">Dashboard</button>
+            <button
+              type="button"
+              className={`nav-item ${
+                currentPage === "dashboard" ? "active" : ""
+              }`}
+              onClick={() => setCurrentPage("dashboard")}
+            >
+              Dashboard
+            </button>
           </div>
 
           <div className="nav-section">
