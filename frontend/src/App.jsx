@@ -168,7 +168,7 @@ function App() {
     setRole(newRole);
 
     if (newRole === "student") {
-      setCurrentPage("dashboard");
+      setCurrentPage("student-dashboard");
     }
 
     if (newRole === "teacher") {
@@ -176,7 +176,7 @@ function App() {
     }
 
     if (newRole === "admin") {
-      setCurrentPage("students");
+      setCurrentPage("admin-dashboard");
     }
   }
 
