@@ -82,8 +82,7 @@ public class AssignmentSubmissionController {
 
             throw new ResponseStatusException(
                     HttpStatus.CONFLICT,
-                    "Student has already submitted this assignment"
-            );
+                    "Student has already submitted this assignment");
         }
 
         submission.setStudent(student);
@@ -103,6 +102,38 @@ public class AssignmentSubmissionController {
                 submission.setStatus(SubmissionStatus.SUBMITTED);
             }
         }
+
+        return submissionRepository.save(submission);
+    }
+
+    @PutMapping("/{id}/grade")
+    public AssignmentSubmission gradeSubmission(
+            @PathVariable Long id,
+            @RequestBody GradeSubmissionRequest request) {
+
+        AssignmentSubmission submission = submissionRepository.findById(id)
+                .orElseThrow(() ->
+                        new ResponseStatusException(
+                                HttpStatus.NOT_FOUND,
+                                "Submission not found"));
+
+        if (request.getMarks() == null || request.getMarks() < 0) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    "Marks cannot be negative");
+        }
+
+        Integer maxMarks = submission.getAssignment().getMaxMarks();
+
+        if (maxMarks != null && request.getMarks() > maxMarks) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    "Marks cannot exceed assignment max marks: " + maxMarks);
+        }
+
+        submission.setMarks(request.getMarks());
+        submission.setFeedback(request.getFeedback());
+        submission.setStatus(SubmissionStatus.GRADED);
 
         return submissionRepository.save(submission);
     }
